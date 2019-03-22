@@ -1,5 +1,7 @@
 #include <queue>
 #include <limits.h>
+#include <mutex>
+#include <condition_variable>
 
 /*
     safeQueue is the class that implements the safe pop and push from a queue.
