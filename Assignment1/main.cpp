@@ -23,27 +23,45 @@ To stick a thread to a core (context) use pthread_setaffinity_np(...)
 
 #include <iostream>
 #include <thread>
+#include <chrono>
 #include "./safeQueue.h"
-
-using namespace std;
-
-
+#include "./threadTasks.h"
 
 
 int main(int argc, char * argv[]){
     if(argc == 1){
-        cout << "Usage: input the lenght of the stream" << endl;
+        std::cout << "Usage: input the lenght of the stream" << std::endl;
         return 0;
     }
-    
+
+    auto start = std::chrono::high_resolution_clock::now();
+
     int streamLen = atoi(argv[1]);
 
-    safeQueue<int> * queue = new safeQueue<int>();
-    queue->push(10);
+    std::vector<std::thread *> threadVector(5);
+    std::vector<safeQueue<int> *> threadQueues(4);
 
-    int i = (int) queue->pop();
+    for(int i=0;i<4;i++){
+        threadQueues[i] = new safeQueue<int>();
+    }
 
-    cout << i << endl;
+
+    threadVector[0] = new std::thread(dispatcher, streamLen, threadQueues[0]);
+    threadVector[1] = new std::thread(increment, threadQueues[0], threadQueues[1]);
+    threadVector[2] = new std::thread(sqrt, threadQueues[1], threadQueues[2]);
+    threadVector[3] = new std::thread(decrement, threadQueues[2], threadQueues[3]);
+    threadVector[4] = new std::thread(printOutput, threadQueues[3]);
+
+
+    for (int i = 0; i < 5; i++){
+        threadVector[i]->join();
+    }
+
+    auto elapsed = std::chrono::high_resolution_clock::now() - start;
+
+    long long milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(elapsed).count();
+
+    std::cout << "Total Time: " << milliseconds << std::endl;
 
     return 0;
 }
