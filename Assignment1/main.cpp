@@ -24,7 +24,7 @@ To stick a thread to a core (context) use pthread_setaffinity_np(...)
 #include <iostream>
 #include <thread>
 #include <chrono>
-#include "./safeQueue.h"
+#include "./safeQueue/safeQueue.h"
 #include "./threadTasks.h"
 
 
