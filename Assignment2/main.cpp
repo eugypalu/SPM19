@@ -82,7 +82,7 @@ void reducer(int nw){
         for (int i = 0; i < nw; i++){
             sum+=partialResult[i];
         }
-        std::cout << sum << std::endl;
+        //std::cout << sum << std::endl;
 
         outputQueue.push(sum);
 
