@@ -4,6 +4,7 @@
 #include <iostream>
 #include <math.h>
 #include "./Utils/utils.h"
+#include "./Utils/utimer.hpp"
 #define EOS -1
 
 
@@ -18,7 +19,7 @@ void producer(int numTask){
     for(int i=0;i<numTask;i++){
         int tmp = rand()%10000+1;
         producerQueue.push(tmp);
-        active_udelay(500);
+        //active_udelay(500);
     }
 
     producerQueue.push(EOS);
@@ -35,7 +36,7 @@ void computePrime(int nw, int start, int end, std::vector<int> * partialResults,
             (* partialResults)[position]++;
         }
     }
-    active_udelay(1000);
+    //active_udelay(500);
 }
 
 /*
@@ -93,18 +94,21 @@ int main(int argc, const char ** argv){
 
     if(argc > 1){
         int numTask = atoi(argv[1]);
-        int concurentThreadsSupported = (int)std::thread::hardware_concurrency();
+        int nw = atoi(argv[2]);
 
-        // This thread produces the tasks and put them in the input queue.
-        std::thread * producerThread = new std::thread(producer, numTask);
+        {   
+            utimer t("Producer + Reducer");
+            // This thread produces the tasks and put them in the input queue.
+            std::thread * producerThread = new std::thread(producer, numTask);
 
-        // Compute the number of prime numbers included in the range
-        reducer(concurentThreadsSupported);
-        producerThread->join();
+            // Compute the number of prime numbers included in the range
+            reducer(nw);
+            producerThread->join();
+        }
         
     }
     else{
-        std::cout << "Usage: the parameter is the number of tasks " << std::endl;
+        std::cout << "Usage: the first parameter is the number of tasks, the second parameter is the number of worker" << std::endl;
     }
 
 
