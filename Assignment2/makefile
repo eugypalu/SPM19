@@ -12,6 +12,5 @@ omp:
 	$(CC) $(CFLAGS) -fopenmp -o omp.o $(OMP) 
 
 clean: 
-	rm -f $(PROGRAM_NAME)
-	rm -f $(TESTNAME)
+	rm -f *.o
 	@echo "Clean done"

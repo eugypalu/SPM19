@@ -53,6 +53,9 @@ int main(int argc, char *argv[])
             }
         }
     }
+    else{
+        std::cout << "Use: ./main.o numTask" << std::endl;
+    }
     }
 
     return 0;

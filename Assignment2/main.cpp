@@ -26,10 +26,10 @@ void producer(int numTask){
 }
 
 /*  
-    This function count the number of prime number in the interval and save
+    This function counts the number of prime number in the interval and save
     the result in the vector partialResults.
 */
-void computePrime(int nw, int start, int end, std::vector<int> * partialResults, int position){
+void computePrime(int start, int end, std::vector<int> * partialResults, int position){
     
     for(int i=start; i<=end; i++){
         if(isPrime(i)){
@@ -52,7 +52,7 @@ int partition(int max, int nw){
 }
 
 /*
-    This function partition the vector in equal parts based on the number of worker,
+    This function partitions the vector in equal parts based on the number of worker,
     then creates the thread to compute the number of prime number in every parts.
     Finally compute the sum of the number of prime number of each part.
 */
@@ -69,9 +69,9 @@ void reducer(int nw){
 
         for(int i=0;i<nw;i++){
             if(i == nw -1){
-                threads[i] = std::thread(computePrime, nw, (binLen * i) + 2, extracted, &partialResult, i);
+                threads[i] = std::thread(computePrime, (binLen * i) + 2, extracted, &partialResult, i);
             }else{
-                threads[i] = std::thread(computePrime, nw, (binLen * i) + 2, binLen * (i + 1) + 1, &partialResult, i);
+                threads[i] = std::thread(computePrime, (binLen * i) + 2, binLen * (i + 1) + 1, &partialResult, i);
             }
         }
         for (int i = 0; i < nw; i++){
@@ -92,7 +92,7 @@ void reducer(int nw){
 
 int main(int argc, const char ** argv){
 
-    if(argc > 1){
+    if(argc > 2){
         int numTask = atoi(argv[1]);
         int nw = atoi(argv[2]);
 
@@ -108,7 +108,7 @@ int main(int argc, const char ** argv){
         
     }
     else{
-        std::cout << "Usage: the first parameter is the number of tasks, the second parameter is the number of worker" << std::endl;
+        std::cout << "Use: ./main.o numTask numWorker " << std::endl;
     }
 
 
