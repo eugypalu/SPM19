@@ -1,4 +1,4 @@
-# SPM19 👨🏻‍💻
+# SPM19 🎓 👨🏻‍💻
 Assignments and Project of the Course Parallel and Distributed Systems: Paradigms and Models (2018-19) @ Unipi
 
 ## Assignment 1 ✅
@@ -28,4 +28,11 @@ Assume an input task is given by an integer number N and the result to compute i
 Once the problem is working, add some delay in the procedure obtaining a task to be computed and delivering a result and observe the impact on scalability.
 You may consider, after providing the C++/Thread implementation, to provide OpenMP or GrPPI implementations as well.
 
+## Assignment 2 (Bis) 🛠
+
+Implement two versions of the prime number application of the second assignment using FastFLow. The first version should use a farm, with the emitter generating the input stream and the collector storing the result pairs (input task, number of primes in the interval). The second version should use parallel for instead, assuming the input tasks are already stored in a vector.
+
 ## Assignment 3 🛠
+
+Parallel implementation of Game Of Life (Conway)
+We require to provide a parallel implementation (using primitive C++ mechanisms) of the Conway's Game of Life. Given an n x n matrix of cells with an initial assignment of alive cells, compute N iterations using nw threads. In case you want to display on the screen (or save to the disk) a graphic representation of the board, please consider using CImg library (single .h file to be compiled with the source. Declaring a color picture is a matter of declaring a Cimg im(x-width, y-width, z-width, colors); variable and then single pixels may be accessed with the overloaded () operator (coords and channel parameters) for reading an writing.
