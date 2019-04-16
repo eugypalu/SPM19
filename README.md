@@ -28,7 +28,7 @@ Assume an input task is given by an integer number N and the result to compute i
 Once the problem is working, add some delay in the procedure obtaining a task to be computed and delivering a result and observe the impact on scalability.
 You may consider, after providing the C++/Thread implementation, to provide OpenMP or GrPPI implementations as well.
 
-## Assignment 2 (Bis) 🛠
+## Assignment 2 (Bis) ✅
 
 Implement two versions of the prime number application of the second assignment using FastFLow. The first version should use a farm, with the emitter generating the input stream and the collector storing the result pairs (input task, number of primes in the interval). The second version should use parallel for instead, assuming the input tasks are already stored in a vector.
 
