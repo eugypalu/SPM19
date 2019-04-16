@@ -88,7 +88,7 @@ struct thirdStage : ff_node_t<pair<int, int>>
 int main(int argc, char *argv[]){
 
     if (argc != 5){
-        cout << "Usage is: " << argv[0] << " m n seed nw" << endl;
+        cout << "Usage is: " << argv[0] << " m n nw seed" << endl;
         return (-1);
     }
 
