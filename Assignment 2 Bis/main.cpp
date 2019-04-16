@@ -1,3 +1,8 @@
+/*
+    Esecuzione:
+    make main
+    ./main.o numeroTask lunghezzaTask nWorker seed
+*/
 #include <ff/ff.hpp>
 #include <iostream>
 #include <vector>
