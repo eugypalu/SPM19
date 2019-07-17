@@ -1,3 +1,5 @@
+// @Authors Alessi Carlo, Corbucci Luca
+
 #include <condition_variable>
 #include <exception>
 #include <iostream>
