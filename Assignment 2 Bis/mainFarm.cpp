@@ -3,15 +3,15 @@
     make main
     ./main.o numeroTask lunghezzaTask nWorker seed
 */
+#include <chrono>
+#include <ff/farm.hpp>
 #include <ff/ff.hpp>
 #include <iostream>
-#include <vector>
-#include <thread>
 #include <mutex>
 #include <string>
-#include <chrono>
+#include <thread>
+#include <vector>
 #include "testprime.cpp"
-#include <ff/farm.hpp>
 using namespace ff;
 using namespace std;
 
@@ -22,14 +22,12 @@ using namespace std;
     Viene mandato in output una coppia <int, int> dove il primo intero indica il task da 
     eseguire e il secondo all'inizio è -1 e poi verrà aggiornato con il valore che viene calcolato
 */
-struct firstStage : ff_node_t<pair<int, int>>
-{
+struct firstStage : ff_node_t<pair<int, int>> {
     firstStage(const size_t numTask, const int maxLen, int seed) : numTask(numTask), maxLen(maxLen), seed(seed) {}
 
-    pair<int, int> * svc(pair<int, int> *){
+    pair<int, int> *svc(pair<int, int> *) {
         srand(seed);
-        for (size_t i = 0; i < numTask; ++i){
-
+        for (size_t i = 0; i < numTask; ++i) {
             ff_send_out(new pair<int, int>(rand() % maxLen, -1));
         }
         return EOS;
@@ -45,10 +43,8 @@ struct firstStage : ff_node_t<pair<int, int>>
     nell'intervallo preso in considerazione e poi manda in output la coppia <task, numeroPrimi nell'intervallo>
 */
 
-struct secondStage : ff_node_t<pair<int, int>>
-{
-    pair<int, int> *svc(pair<int, int> * task)
-    {
+struct secondStage : ff_node_t<pair<int, int>> {
+    pair<int, int> *svc(pair<int, int> *task) {
         pair<int, int> &primes = *task;
 
         int original = primes.first;
@@ -58,23 +54,21 @@ struct secondStage : ff_node_t<pair<int, int>>
     }
 };
 
-
 /*
     Il terzo stage prende la coppia e la memorizza in un vettore.
     Quando finisce di estrarre i dati allora legge il contenuto 
     del vettore e lo stampa.
 */
-struct thirdStage : ff_node_t<pair<int, int>>
-{
-    pair<int, int> *svc(pair<int, int> *task){
+struct thirdStage : ff_node_t<pair<int, int>> {
+    pair<int, int> *svc(pair<int, int> *task) {
         pair<int, int> &t = *task;
         result.push_back(t);
         delete task;
         return GO_ON;
     }
 
-    void printVector(vector<pair<int, int>> vct){
-        for (int i = 0; i < vct.size(); i++){
+    void printVector(vector<pair<int, int>> vct) {
+        for (int i = 0; i < vct.size(); i++) {
             cout << "Task: " << vct[i].first << " Number of primes:" << vct[i].second << endl;
         }
     }
@@ -83,21 +77,18 @@ struct thirdStage : ff_node_t<pair<int, int>>
     vector<pair<int, int>> result;
 };
 
-
-
-int main(int argc, char *argv[]){
-
-    if (argc != 5){
+int main(int argc, char *argv[]) {
+    if (argc != 5) {
         cout << "Usage is: " << argv[0] << " m n nw seed" << endl;
         return (-1);
     }
 
-    int m = atoi(argv[1]);    // Quanti task
-    int maxLen = atoi(argv[2]); // Dimensione singolo task
-    int nw = atoi(argv[3]);   // Numero worker
-    int seed = atoi(argv[4]); // il seed per il calcolo random dei task
+    int m = atoi(argv[1]);       // Quanti task
+    int maxLen = atoi(argv[2]);  // Dimensione singolo task
+    int nw = atoi(argv[3]);      // Numero worker
+    int seed = atoi(argv[4]);    // il seed per il calcolo random dei task
 
-    if(nw > 0){
+    if (nw > 0) {
         firstStage emitter(m, maxLen, seed);
         thirdStage collector;
 
@@ -108,16 +99,13 @@ int main(int argc, char *argv[]){
 
         {
             utimer tpar("par nw = " + to_string(nw) + " m= " + to_string(m) + " max= " + to_string(maxLen));
-            if (farm.run_and_wait_end() < 0)
-            {
+            if (farm.run_and_wait_end() < 0) {
                 error("running farm");
                 return -1;
             }
             ffTime(STOP_TIME);
         }
-        
     }
-    
-    
+
     return 0;
 }
