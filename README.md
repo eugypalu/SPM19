@@ -32,7 +32,11 @@ You may consider, after providing the C++/Thread implementation, to provide Open
 
 Implement two versions of the prime number application of the second assignment using FastFLow. The first version should use a farm, with the emitter generating the input stream and the collector storing the result pairs (input task, number of primes in the interval). The second version should use parallel for instead, assuming the input tasks are already stored in a vector.
 
-## Assignment 3 🛠
+## Assignment 3 ✅
 
 Parallel implementation of Game Of Life (Conway)
 We require to provide a parallel implementation (using primitive C++ mechanisms) of the Conway's Game of Life. Given an n x n matrix of cells with an initial assignment of alive cells, compute N iterations using nw threads. In case you want to display on the screen (or save to the disk) a graphic representation of the board, please consider using CImg library (single .h file to be compiled with the source. Declaring a color picture is a matter of declaring a Cimg im(x-width, y-width, z-width, colors); variable and then single pixels may be accessed with the overloaded () operator (coords and channel parameters) for reading an writing.
+
+## Assignment 4 ✅
+
+We wish you implement an object computing in parallel (shared memory, using threads (ver 1) and FF (ver 2)) the google map reduce. Parameters to be given include the map function (type function<pair<Tout,Tkey>(Tin)>), the reduce function (type function<Tout(Tout,Tout)>). The input task is a vector<Tin> and the output result has to be a vector<pair<Tout,Tkey>.
