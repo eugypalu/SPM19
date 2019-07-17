@@ -5,7 +5,6 @@
 #include <iostream>
 #include <utility>
 #include <vector>
-#include "../MapReduce.h"
 #include <ff/ff.hpp>
 #include <ff/pipeline.hpp>
 #include <ff/farm.hpp>
@@ -100,6 +99,8 @@ void setup(std::vector<T> data, int nw_reducer, int nw_mapper) {
 
     int dim = data.size() / nw_mapper;
 
+    ffTime(START_TIME);
+
     // create mappers
     for (int i = 0; i < nw_mapper; i++) {
         int startIdx = i * dim;
@@ -128,11 +129,14 @@ void setup(std::vector<T> data, int nw_reducer, int nw_mapper) {
                                             r->temp_results[0]),
                            r->temp_results.begin(), r->temp_results.end());
     }
+    ffTime(STOP_TIME);
 
     // printing results:
     for (auto pair : results) {
         std::cout << pair.first << ", " << pair.second << std::endl;
     }
+    std::cout << "Time: " << ffTime(GET_TIME) << " (ms)\n";
+    std::cout << "A2A Time: " << a2a.ffTime() << " (ms)\n";
 }
 
 int main(int argc, char *argv[]) {
@@ -145,7 +149,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << "First test, with strings" << std::endl;
     setup(dataString, atoi(argv[1]), atoi(argv[2]));
-
+    std::cout << "" << std::endl;
     std::cout << "Second test, with integers" << std::endl;
     setup(dataInt, atoi(argv[1]), atoi(argv[2]));
 
